@@ -80,16 +80,11 @@ class Article < Content
     Article.exists?({:parent_id => self.id})
   end
 
-  def self.merge_with(id1, id2)
-    @article1 = Article.find(id1)
-    @article2 = Article.find(id2)
-    @article1.body = "this is now changed"
-    @article1.update(title: "new title")
-    #@article2.comments ||= @article1 
-    if !@article1.save
-      raise Exception
-    end
-    #@article1.comments.save! if @article1.comments
+  def merge_with(id)
+    @article = Article.find(id)
+    logger.debug("article's 1 body #{@article.body}")
+    self.body += @article.body
+    self.save
   end
 
   attr_accessor :draft, :keywords

@@ -114,12 +114,10 @@ class Admin::ContentController < Admin::BaseController
   end
 
   def merge
-    #logger.debug("article id: #{params[:id]}")
-    #raise params.inspect
     @article = Article.find(params[:id])
-    Article.merge_with(@article.id, params[:merge_with])
-    render :nothing => true
-    #redirect_to admin_content_path
+    @article.merge_with(params[:merge_with])
+    flash[:notice] = "Successfully merged articles."
+    redirect_to admin_content_path
   end
 
   protected

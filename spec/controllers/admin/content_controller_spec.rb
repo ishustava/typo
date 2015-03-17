@@ -670,5 +670,34 @@ describe Admin::ContentController do
       end
 
     end
+
+    describe 'merge article' do
+
+      it 'should call model method for merging' do
+        @article = Factory(:article, :user => Factory(:user, :login => 'admin', :profile => Factory(:profile_admin, :label => Profile::ADMIN)))
+        Article.should_receive(:find).and_return(@article)
+        Article.should_receive(:merge_with).with("3")
+        post :merge, { :id => @article.id, :merge_with => "3" }
+      end
+
+      it 'should redirect to content page without notice if merge successful' do
+        @user = Factory(:user, :login => 'admin', :profile => Factory(:profile_admin, :label => Profile::ADMIN))
+        @article1 = Factory(:article, :user => @user)
+        #@article2 = Factory(:article, :user => Factory(:user, :login => 'admin', :profile => Factory(:profile_admin, :label => Profile::ADMIN))
+        post :merge, { :id => @article1.id, :merge_with => "3" }
+        flash[:notice].should be_nil
+        response.should redirect_to admin_content_path
+      end
+
+      it 'should not call merge method on the model if the user is not admin' do
+        @article = Factory(:article, :user => Factory(:user, :login => 'another_user1', :profile_id => 2))
+        post :merge, { :id => @article.id, :merge_with => "3" }
+        flash[:notice].should_not be_nil
+        #Article.should_receive(:find).and_return(@article)
+        Article.should_not_receive(:merge_with)
+      end
+
+    end
+
   end
 end

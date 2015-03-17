@@ -80,6 +80,18 @@ class Article < Content
     Article.exists?({:parent_id => self.id})
   end
 
+  def self.merge_with(id1, id2)
+    @article1 = Article.find(id1)
+    @article2 = Article.find(id2)
+    @article1.body = "this is now changed"
+    @article1.update(title: "new title")
+    #@article2.comments ||= @article1 
+    if !@article1.save
+      raise Exception
+    end
+    #@article1.comments.save! if @article1.comments
+  end
+
   attr_accessor :draft, :keywords
 
   has_state(:state,
@@ -456,6 +468,7 @@ class Article < Content
     self.notify_users = users.uniq
   end
 
+
   def self.time_delta(year = nil, month = nil, day = nil)
     return nil if year.nil? && month.nil? && day.nil?
     from = Time.utc(year, month || 1, day || 1)
@@ -466,4 +479,6 @@ class Article < Content
     to = to - 1 # pull off 1 second so we don't overlap onto the next day
     return from..to
   end
+
+
 end

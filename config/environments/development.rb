@@ -25,4 +25,6 @@ TypoBlog::Application.configure do
   end
 
   config.log_level = :debug
+
+  Rails.logger = Logger.new(STDOUT)
 end

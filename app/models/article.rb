@@ -89,8 +89,9 @@ class Article < Content
       comment.save
     end
 
-    @article.destroy
     self.save
+    Article.find(id).destroy
+    
   end
 
   attr_accessor :draft, :keywords

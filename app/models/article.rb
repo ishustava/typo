@@ -84,6 +84,7 @@ class Article < Content
     @article = Article.find(id)
     logger.debug("article's 1 body #{@article.body}")
     self.body += @article.body
+    @article.destroy
     self.save
   end
 

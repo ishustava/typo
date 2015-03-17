@@ -82,8 +82,13 @@ class Article < Content
 
   def merge_with(id)
     @article = Article.find(id)
-    logger.debug("article's 1 body #{@article.body}")
     self.body += @article.body
+    
+    @article.comments.each do |comment| 
+      comment.article = self
+      comment.save
+    end
+
     @article.destroy
     self.save
   end

@@ -27,6 +27,14 @@ module NavigationHelpers
     when /^the comments page$/
         '/admin/feedback'
 
+    when /^the categories page$/
+        '/admin/categories/new'
+
+    when /^create new category page$/
+        '/admin/categories/new'
+
+    
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

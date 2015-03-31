@@ -6,11 +6,10 @@ class Admin::CategoriesController < Admin::BaseController
 
   def new 
     respond_to do |format|
+      format.html { new_or_edit }
       format.js { 
         @category = Category.new
       }
-      format.html { new_or_edit }
-      
     end
   end
 
